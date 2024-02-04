@@ -11,9 +11,21 @@ permissions:
 
 jobs:
   build:
-    name: Post welcome comment
+    name: Job Number One
     runs-on: ubuntu-latest
     steps:
+      - name: Dump Job Context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT"
+      - name: Dump Step Context
+        env:
+          STEP_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEP_CONTEXT"
+      - name: Dump Runner Context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
       - run: gh pr comment $PR_URL --body "Welcome to laurence's repository"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
