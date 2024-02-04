@@ -11,14 +11,18 @@ permissions:
   pull-requests: write
 
 jobs:
-  build:
-    name: Job Number One
+  dump-context-secret-env:
+    name: Job Dump Context 1
     runs-on: ubuntu-latest
     steps:
       - name: What is my secret?
         run: echo ${{ toJson(secrets.laurence_test_env) }} 
       - name: Dump Env Context
         run: echo ${{ toJson(env) }}
+  dump-context-github-job:
+    name: Job Dump Context 2
+    runs-on: ubuntu-latest
+    steps:
       - name: Dump Github Context
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -27,6 +31,10 @@ jobs:
         env:
           JOB_CONTEXT: ${{ toJson(job) }}
         run: echo "$JOB_CONTEXT"
+  dump-context-step-runner:
+    name: Job Dump Context 3
+    runs-on: ubuntu-latest
+    steps:
       - name: Dump Step Context
         env:
           STEP_CONTEXT: ${{ toJson(steps) }}
@@ -35,6 +43,10 @@ jobs:
         env:
           RUNNER_CONTEXT: ${{ toJson(runner) }}
         run: echo "$RUNNER_CONTEXT"
+  build:
+    name: Job Number One
+    runs-on: ubuntu-latest
+    steps:
       - run: gh pr comment $PR_URL --body "Welcome to laurence's repository"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
