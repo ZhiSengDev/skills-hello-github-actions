@@ -62,6 +62,9 @@ jobs:
     name: Job Number One
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # This step checks out your repository code and initializes Git.
+      
       - run: gh pr comment $PR_URL --body "Welcome to $GITHUB_ACTOR's repository"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
