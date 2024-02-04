@@ -1,5 +1,5 @@
 name: Post welcome comment
-run-name: ${{ github.actor }} is runnig it
+run-name: ${{ github.actor }} is running it
 
 on:
   pull_request:
@@ -19,7 +19,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-    
-
-
-  
+          
