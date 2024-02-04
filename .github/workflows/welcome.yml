@@ -1,22 +1,73 @@
 name: Post welcome comment
+run-name: ${{ github.actor }} is running it
 
 on:
+  workflow_dispatch:  # Manual run event
   pull_request:
     types: [opened]
-    
+  push:
+
 permissions:
   pull-requests: write
 
 jobs:
-  build:
-    name: Post welcome comment
+  create-new-comment:
+    name: Create New Comment with Community Action
     runs-on: ubuntu-latest
     steps:
-      - run: gh pr comment $PR_URL --body "Welcome to laurence`s repository"
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v4
+        with:
+          issue-number: 1
+          body: |
+            This is a multi-line test comment
+            - With GitHub **Markdown** :sparkles:
+            - Created by [create-or-update-comment][1]
+  
+            [1]: https://github.com/peter-evans/create-or-update-comment
+          reactions: '+1'
+  dump-context-secret-env:
+    name: Job Dump Context 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: What is my secret?
+        run: echo ${{ toJson(secrets.laurence_test_env) }} 
+      - name: Dump Env Context
+        run: echo '${{ toJson(env) }}'
+  dump-context-github-job:
+    name: Job Dump Context 2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump Github Context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "GITHUB_CONTEXT | jg"
+      - name: Dump Job Context
+        env:
+          JOB_CONTEXT: ${{ toJson(job) }}
+        run: echo "$JOB_CONTEXT" 
+  dump-context-step-runner:
+    name: Job Dump Context 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump Step Context
+        env:
+          STEP_CONTEXT: ${{ toJson(steps) }}
+        run: echo "$STEP_CONTEXT"
+      - name: Dump Runner Context
+        env:
+          RUNNER_CONTEXT: ${{ toJson(runner) }}
+        run: echo "$RUNNER_CONTEXT"
+  build:
+    name: Job Number One
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4  # This step checks out your repository code and initializes Git.
+      
+      - run: gh pr comment $PR_URL --body "Welcome to $GITHUB_ACTOR's repository"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_URL: ${{ github.event.pull_request.html_url }}
-    
-
-
-  
+          REPOSITORY: ${{ github.repository }}
+          GITHUB_ACTOR: ${{ github.actor }}
