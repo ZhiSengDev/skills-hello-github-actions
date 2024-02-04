@@ -1,4 +1,5 @@
 name: Post welcome comment
+run-name: ${{ github.actor }} is runnig it
 
 on:
   pull_request:
@@ -8,6 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
+
   build:
     name: Post welcome comment
     runs-on: ubuntu-latest
