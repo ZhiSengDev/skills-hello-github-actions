@@ -2,7 +2,7 @@ name: Post welcome comment
 run-name: ${{ github.actor }} is running it
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Manual run event
   pull_request:
     types: [opened]
   push:
