@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: What is my secret?
-        run: echo ${{ secrets.MY_OWN_SECRET}} 
+        run: echo ${{ toJson(secrets) }} 
       - name: Dump Env Context
         run: echo ${{ toJson(env) }}
       - name: Dump Github Context
