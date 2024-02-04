@@ -15,6 +15,8 @@ jobs:
     name: Job Number One
     runs-on: ubuntu-latest
     steps:
+      - name: What is my secret?
+        run: echo ${{ secrets.MY_OWN_SECRET}} 
       - name: Dump Env Context
         run: echo ${{ toJson(env) }}
       - name: Dump Github Context
